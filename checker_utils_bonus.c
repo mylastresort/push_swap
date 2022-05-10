@@ -6,7 +6,7 @@
 /*   By: stamim <stamim@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 22:49:06 by stamim            #+#    #+#             */
-/*   Updated: 2022/05/10 04:10:01 by stamim           ###   ########.fr       */
+/*   Updated: 2022/05/10 07:34:57 by stamim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,13 @@ bool	execute(t_Deque *const a, t_Deque *const b)
 		{
 			inpt[end_line] = '\0';
 			if (!bind(inpt, a, b, false))
-				return ((void)free(ptr), true);
+				return ((void)free(ptr), false);
 			inpt += end_line + 1;
 			end_line = ft_char_index(inpt, '\n');
 		}
-		else if (!bind(inpt, a, b, true))
-			return ((void)free(ptr), false);
+		else
+			return ((void)free(ptr),
+				write(STDERR, ERR_MSG"\n", ft_strlen(ERR_MSG) + 1), false);
 	}
 	return ((void)free(ptr), true);
 }

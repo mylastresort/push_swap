@@ -6,19 +6,19 @@
 /*   By: stamim <stamim@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 17:20:58 by stamim            #+#    #+#             */
-/*   Updated: 2022/05/10 02:03:26 by stamim           ###   ########.fr       */
+/*   Updated: 2022/05/10 08:22:25 by stamim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
 static inline bool	integer_type(const char *const arg,
-	const bool minus, bool *const list)
+	const bool minus, unsigned short int i, bool *const list)
 {
-	unsigned short int	i;
 	static char			max[11] = "2147483647";
 
-	i = minus;
+	if (arg[0] == '\0')
+		return (write(STDERR, ERR_MSG "\n", ft_strlen(ERR_MSG) + 1), false);
 	while (arg[i])
 	{
 		if (arg[i] == ' ')
@@ -42,7 +42,8 @@ static inline bool	integer_type(const char *const arg,
 	return (true);
 }
 
-static inline bool	append_card(const char *const arg, t_Deque *const a)
+static inline bool	append_card(
+	const char *const arg, t_Deque *const a)
 {
 	static int	val;
 	t_LLNode	*el;
@@ -72,7 +73,7 @@ static bool	handle_integers_list(t_Deque *const a,
 
 	while (*arg)
 	{
-		if (integer_type(arg, *arg == '-', &list))
+		if (integer_type(arg, *arg == '-', *arg == '-', &list))
 		{
 			if (!append_card(arg, a))
 				return (false);
@@ -89,11 +90,10 @@ static bool	handle_integers_list(t_Deque *const a,
 	return (true);
 }
 
-static inline bool	init(t_Deque *const a, char *args[], bool *const sorted)
+static inline bool	init(
+	t_Deque *const a, char *args[], bool *const sorted, bool list)
 {
-	static bool	list = false;
-
-	if (integer_type(*args, **args == '-', &list))
+	if (integer_type(*args, **args == '-', **args == '-', &list))
 	{
 		if (!append_card(*args, a))
 			return (false);
@@ -104,7 +104,7 @@ static inline bool	init(t_Deque *const a, char *args[], bool *const sorted)
 		return (false);
 	while (*++args != NULL)
 	{
-		if (integer_type(*args, **args == '-', &list))
+		if (integer_type(*args, **args == '-', **args == '-', &list))
 		{
 			if (!append_card(*args, a))
 				return (false);
@@ -125,7 +125,7 @@ int	main(const int ac, char *av[])
 	sorted = true;
 	stacks[0] = (t_Deque){0};
 	stacks[1] = (t_Deque){0};
-	if (ac <= 1 || !init(&stacks[0], av + 1, &sorted))
+	if (ac <= 1 || !init(&stacks[0], av + 1, &sorted, false))
 	{
 		ft_free_llnode(stacks[0].head);
 		return (EXIT_FAILURE);
