@@ -6,7 +6,7 @@
 /*   By: stamim <stamim@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 16:23:31 by stamim            #+#    #+#             */
-/*   Updated: 2022/05/10 07:01:57 by stamim           ###   ########.fr       */
+/*   Updated: 2022/05/10 07:11:29 by stamim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,8 @@ static inline void	spin(t_Deque *const a, t_Deque *const b, int depth)
 		while (a->tail->val > b->head->val && ++depth)
 			bind(RRA, a, b, true);
 		while (b->head != NULL && a->head->val > b->head->val
-			&& a->tail->val < b->head->val)
-		{
+			&& a->tail->val < b->head->val && ++depth)
 			bind(PA, a, b, true);
-			bind(RA, a, b, true);
-		}
 		while (depth-- > 0)
 			bind(RA, a, b, true);
 	}
